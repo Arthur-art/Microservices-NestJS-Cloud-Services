@@ -4,3 +4,6 @@
 
 ### Iniciando o projeto com a cli do nestjs
 - https://docs.nestjs.com/first-steps
+
+### Criando o modulo de jogadores
+- https://docs.nestjs.com/modules#creating-modules
