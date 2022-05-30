@@ -7,3 +7,6 @@
 
 ### Criando o modulo de jogadores
 - https://docs.nestjs.com/modules#creating-modules
+
+### Criando o controller de jogadores
+- https://docs.nestjs.com/controllers#creating-controllers
