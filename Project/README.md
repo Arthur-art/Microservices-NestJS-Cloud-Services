@@ -5,8 +5,11 @@
 ### Iniciando o projeto com a cli do nestjs
 - https://docs.nestjs.com/first-steps
 
-### Criando o modulo de jogadores
+### Desenvolvendo o modulo de jogadores
 - https://docs.nestjs.com/modules#creating-modules
 
-### Criando o controller de jogadores
+### Desenvolvendo o controller de jogadores
 - https://docs.nestjs.com/controllers#creating-controllers
+
+### Desenvolvendo o service de jogadores
+- https://docs.nestjs.com/services#creating-services
