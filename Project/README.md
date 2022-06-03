@@ -13,3 +13,5 @@
 
 ### Desenvolvendo o service de jogadores
 - https://docs.nestjs.com/services#creating-services
+- Trabalhando com lib uuid para gerar um id para o jogador
+  - npm install uuid
