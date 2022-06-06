@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateJogadorDto } from './dtos/createJogador.dto';
 import { JogadorInterface } from './interfaces/jogadores.interface';
 import { v4 as uuidv4 } from 'uuid'
@@ -8,11 +8,16 @@ export class JogadoresService {
 
     private jogadores: JogadorInterface[] = []
 
-    createJogador(createJogador: CreateJogadorDto): JogadorInterface[] {
+    createJogador(createJogador: CreateJogadorDto): string {
 
        this.create(createJogador);
 
-       return this.jogadores;
+       return 'Jogador criado com sucesso!'
+    }
+
+   async listPlayers(): Promise<JogadorInterface[]>{
+
+        return this.jogadores;
     }
 
     private create(createJogador: CreateJogadorDto): void {
