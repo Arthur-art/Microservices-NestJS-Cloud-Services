@@ -8,14 +8,29 @@ export class JogadoresService {
 
     private jogadores: JogadorInterface[] = []
 
-    createJogador(createJogador: CreateJogadorDto): string {
+   async createJogador(jogador: CreateJogadorDto): Promise<string> {
 
-       this.create(createJogador);
+       this.create(jogador);
 
        return 'Jogador criado com sucesso!'
     }
 
-   async listPlayers(): Promise<JogadorInterface[]>{
+    async updatingJogador(jogador: CreateJogadorDto): Promise<JogadorInterface | string>{
+        const { email } = jogador;
+
+        const jogadorEncontrado = this.jogadores.find((value)=>{
+
+            return value.email === email;
+        })
+
+        if(jogadorEncontrado){
+          return this.atualizar(jogadorEncontrado, jogador)
+        }
+
+        return "Jogador não encontrado."
+    }
+
+   async listJogadores(): Promise<JogadorInterface[]>{
 
         return this.jogadores;
     }
@@ -34,6 +49,14 @@ export class JogadoresService {
         };
         this.jogadores.push(jogador);
 
+    }
+
+    private atualizar(jogadorEncontrado: JogadorInterface, criarJogador:CreateJogadorDto){
+        const { nome } = criarJogador;
+
+        jogadorEncontrado.nome = nome;
+
+        return jogadorEncontrado
     }
 
 }

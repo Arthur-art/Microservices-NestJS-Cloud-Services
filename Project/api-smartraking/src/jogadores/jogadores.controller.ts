@@ -9,14 +9,20 @@ export class JogadoresController {
     constructor(private readonly jogadoresService:JogadoresService) { }
 
     @Post('create')
-    async criarAtualizarJogador(@Body() body:CreateJogadorDto){
+    async criarAtualizarJogador(@Body() jogador:CreateJogadorDto){
         
-        return this.jogadoresService.createJogador(body);
+        return this.jogadoresService.createJogador(jogador);
     }
 
-    @Get('list-players')
-    async listPlayers(): Promise<JogadorInterface[]>{
+    @Post('atualizar-player')
+    async atualizarJogador(@Body() jogador:CreateJogadorDto): Promise<JogadorInterface | string>{
 
-        return this.jogadoresService.listPlayers()
+        return  this.jogadoresService.updatingJogador(jogador)
+    }
+
+    @Get('list-jogadores')
+    async listJogadores(): Promise<JogadorInterface[]>{
+
+        return this.jogadoresService.listJogadores()
     }
 }
