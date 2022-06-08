@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateJogadorDto } from './dtos/createJogador.dto';
 import { JogadorInterface } from './interfaces/jogadores.interface';
 import { v4 as uuidv4 } from 'uuid'
@@ -15,7 +15,7 @@ export class JogadoresService {
        return 'Jogador criado com sucesso!'
     }
 
-    async updatingJogador(jogador: CreateJogadorDto): Promise<JogadorInterface | string>{
+    async updatingJogador(jogador: CreateJogadorDto): Promise<string>{
         const { email } = jogador;
 
         const jogadorEncontrado = this.jogadores.find((value)=>{
@@ -25,9 +25,9 @@ export class JogadoresService {
 
         if(jogadorEncontrado){
           return this.atualizar(jogadorEncontrado, jogador)
+        }else{
+            throw new NotFoundException("Jogador não encontrado.")
         }
-
-        return "Jogador não encontrado."
     }
 
    async listJogadores(): Promise<JogadorInterface[]>{
@@ -35,17 +35,30 @@ export class JogadoresService {
         return this.jogadores;
     }
 
-   async listJogadorByEmail(email:string):Promise<JogadorInterface | string>{
+   async listJogadorByEmail(email:string):Promise<JogadorInterface>{
     const jogadorEncontrado = this.jogadores.find((value)=>{
 
         return value.email === email;
     })
 
     if(!jogadorEncontrado){
-        "Jogador não encontrado"
+        throw new NotFoundException("Jogador não encontrado.")
     }
     return jogadorEncontrado;
    } 
+
+   async deleteJogador(email:string): Promise<string>{
+        const jogadorEncontrado = this.jogadores.find((value)=>{
+            return value.email === email;
+        });
+
+        if(jogadorEncontrado){
+            this.jogadores.splice(this.jogadores.indexOf(jogadorEncontrado), 1);
+            return `Jogador ${jogadorEncontrado.nome} deletado com sucesso!`;
+        }else{
+            throw new NotFoundException("Jogador não encontrado.");
+        }
+   }
 
     private create(createJogador: CreateJogadorDto): void {
         const { nome, telefone, email } = createJogador;
@@ -63,12 +76,12 @@ export class JogadoresService {
 
     }
 
-    private atualizar(jogadorEncontrado: JogadorInterface, criarJogador:CreateJogadorDto){
+    private async atualizar(jogadorEncontrado: JogadorInterface, criarJogador:CreateJogadorDto):Promise<string>{
         const { nome } = criarJogador;
 
         jogadorEncontrado.nome = nome;
 
-        return jogadorEncontrado
+        return "Nome do jogador alterado com sucesso!"
     }
 
 }
