@@ -25,4 +25,10 @@ export class JogadoresController {
 
         return this.jogadoresService.listJogadores()
     }
+
+    @Get('list-jogador')
+    async listJogador(@Body() email:{email:string}): Promise<JogadorInterface | string>{
+
+        return this.jogadoresService.listJogadorByEmail(email.email)
+    }
 }

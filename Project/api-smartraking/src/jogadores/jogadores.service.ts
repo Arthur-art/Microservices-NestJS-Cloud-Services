@@ -35,6 +35,18 @@ export class JogadoresService {
         return this.jogadores;
     }
 
+   async listJogadorByEmail(email:string):Promise<JogadorInterface | string>{
+    const jogadorEncontrado = this.jogadores.find((value)=>{
+
+        return value.email === email;
+    })
+
+    if(!jogadorEncontrado){
+        "Jogador não encontrado"
+    }
+    return jogadorEncontrado;
+   } 
+
     private create(createJogador: CreateJogadorDto): void {
         const { nome, telefone, email } = createJogador;
 
