@@ -15,3 +15,8 @@
 - https://docs.nestjs.com/services#creating-services
 - Trabalhando com lib uuid para gerar um id para o jogador
   - npm install uuid
+
+### Trabalhando com mongoose
+- https://docs.nestjs.com/data-access#mongoose
+- npm install @nestjs/mongoose mongoose
+- npm install --save-dev @types/mongoose
