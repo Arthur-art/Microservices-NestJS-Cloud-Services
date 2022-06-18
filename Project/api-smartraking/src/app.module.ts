@@ -4,12 +4,7 @@ import { JogadoresModule } from './jogadores/jogadores.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_CONNECT_STRING,
-      { useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false }
-      ),
+    MongooseModule.forRoot('mongodb+srv://arthur-art:236993MongodbArthur@cluster0.n7bar.mongodb.net/?retryWrites=true&w=majority'),
     JogadoresModule],
   controllers: [],
   providers: [],

@@ -20,3 +20,6 @@
 - https://docs.nestjs.com/data-access#mongoose
 - npm install @nestjs/mongoose mongoose
 - npm install --save-dev @types/mongoose
+
+### Trabalhando com variáveis de ambiente
+- https://docs.nestjs.com/configuration#environment-variables

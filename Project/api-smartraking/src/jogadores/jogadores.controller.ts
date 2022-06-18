@@ -16,7 +16,7 @@ export class JogadoresController {
     }
 
     @Post('atualizar-jogador')
-    async atualizarJogador(@Body() jogador:CreateJogadorDto): Promise<string>{
+    async atualizarJogador(@Body() jogador:CreateJogadorDto): Promise<JogadorInterface>{
 
         return  this.jogadoresService.updatingJogador(jogador);
     }
@@ -34,7 +34,7 @@ export class JogadoresController {
     }
 
     @Delete('delete-jogador')
-    async deleteJogador(@Body() body:EmailJogadorDto): Promise<string>{
+    async deleteJogador(@Body() body:EmailJogadorDto): Promise<JogadorInterface>{
 
         return this.jogadoresService.deleteJogador(body.email);
     }
