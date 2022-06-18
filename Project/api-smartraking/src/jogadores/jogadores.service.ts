@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateJogadorDto } from './dtos/createJogador.dto';
-import { JogadorInterface } from './interfaces/jogadores.interface';
-import { v4 as uuidv4 } from 'uuid'
-
+import { JogadorInterface } from './interfaces/jogador.interface';
 @Injectable()
 export class JogadoresService {
 
-    private jogadores: JogadorInterface[] = []
+    private jogadores: JogadorInterface[] = [];
+
+    constructor(@InjectModel("Jogador") private readonly jogadorModel:Model<JogadorInterface>) {}
 
    async createJogador(jogador: CreateJogadorDto): Promise<string> {
 
@@ -18,10 +20,7 @@ export class JogadoresService {
     async updatingJogador(jogador: CreateJogadorDto): Promise<string>{
         const { email } = jogador;
 
-        const jogadorEncontrado = this.jogadores.find((value)=>{
-
-            return value.email === email;
-        })
+        const jogadorEncontrado = await this.jogadorModel.findOne({email}).exec();
 
         if(jogadorEncontrado){
           return this.atualizar(jogadorEncontrado, jogador)
@@ -54,7 +53,7 @@ export class JogadoresService {
 
         if(jogadorEncontrado){
             this.jogadores.splice(this.jogadores.indexOf(jogadorEncontrado), 1);
-            return `Jogador ${jogadorEncontrado.nome} deletado com sucesso!`;
+            return `Jogador ${jogadorEncontrado.name} deletado com sucesso!`;
         }else{
             throw new NotFoundException("Jogador não encontrado.");
         }
@@ -64,13 +63,12 @@ export class JogadoresService {
         const { nome, telefone, email } = createJogador;
 
         const jogador: JogadorInterface = {
-            _id: uuidv4(),
             email,
-            nome,
-            telefone,
-            posicaoRanking:1,
+            name: nome,
+            phone: telefone,
+            positionRanking:1,
             ranking:"A",
-            urlFotoJogador: "https://avatars.githubusercontent.com/u/54858003?v=4",
+            urlPhotoJogador: "https://avatars.githubusercontent.com/u/54858003?v=4",
         };
         this.jogadores.push(jogador);
 
@@ -79,7 +77,7 @@ export class JogadoresService {
     private async atualizar(jogadorEncontrado: JogadorInterface, criarJogador:CreateJogadorDto):Promise<string>{
         const { nome } = criarJogador;
 
-        jogadorEncontrado.nome = nome;
+        jogadorEncontrado.name = nome;
 
         return "Nome do jogador alterado com sucesso!"
     }
