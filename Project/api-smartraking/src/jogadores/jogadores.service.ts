@@ -9,7 +9,8 @@ export class JogadoresService {
     constructor(@InjectModel("Jogador") private readonly jogadorModel:Model<JogadorInterface>) {}
 
    async createJogador(jogador: CreateJogadorDto): Promise<string> {
-
+        console.log(process.env.MONGODB_CONNECT_STRING);
+        return
        this.create(jogador);
 
        return 'Jogador criado com sucesso!'

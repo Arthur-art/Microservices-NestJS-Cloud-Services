@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JogadoresModule } from './jogadores/jogadores.module';
+import { ConfigModule } from '@nestjs/config';
+import { connectStringMongodb } from './database/connectString';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://arthur-art:236993MongodbArthur@cluster0.n7bar.mongodb.net/?retryWrites=true&w=majority'),
+    MongooseModule.forRoot(connectStringMongodb),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     JogadoresModule],
   controllers: [],
   providers: [],
