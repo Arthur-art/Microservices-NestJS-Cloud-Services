@@ -8,28 +8,19 @@ export class JogadoresService {
 
     constructor(@InjectModel("Jogador") private readonly jogadorModel:Model<JogadorInterface>) {}
 
-   async createJogador(jogador: CreateJogadorDto): Promise<string> {
+   async createJogador(jogador: CreateJogadorDto): Promise<JogadorInterface> {
 
        const { email, phone } = jogador;
 
-       const jogadorEncontrado = await this.jogadorModel.findOne({email}) 
+       const emailAlreadyExists = await this.jogadorModel.findOne({email}) 
+       const phoneAlreadyExists = await this.jogadorModel.findOne({phone}) 
 
-       const phoneAlreadyRegistered = jogadorEncontrado?.phone === phone;
-       const emailAlreadyRegistered = jogadorEncontrado?.email === email;
-
-       if(phoneAlreadyRegistered){
-        this.throwNewError("Telefone ja cadastrado.");
-        return;
-       };
-
-       if(emailAlreadyRegistered) {
-        this.throwNewError("Email ja cadastrado.");
-        return;
+       if(!emailAlreadyExists && !phoneAlreadyExists){
+        return await this.create(jogador)
+       }else{
+        this.throwNewError("Jogador já está cadastrado.")
        }
 
-       this.create(jogador);
-
-       return 'Jogador criado com sucesso!'
     }
 
     async updatingJogador(jogador: CreateJogadorDto): Promise<JogadorInterface>{
@@ -59,12 +50,13 @@ export class JogadoresService {
     return jogadorEncontrado;
    } 
 
-   async deleteJogador(email:string): Promise<JogadorInterface>{
+   async deleteJogador(email:string): Promise<string>{
 
     const jogadorEncontrado = await this.jogadorModel.findOne({email}).exec();
 
     if(jogadorEncontrado){
-        return await this.jogadorModel.remove({email}).exec();
+        await this.jogadorModel.deleteOne({email}).exec();
+        return `Jogador ${jogadorEncontrado.name} foi deletado.`
     }else{
         this.throwNewError("Jogador não encontrado.")
     }   
