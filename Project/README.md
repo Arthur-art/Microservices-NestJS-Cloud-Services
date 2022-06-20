@@ -45,3 +45,6 @@ config();
 export class AppModule {}
 
 ```
+
+### Trabalhando com ValidationPipe no nestjs
+- https://docs.nestjs.com/techniques/validation#using-the-built-in-validationpipe

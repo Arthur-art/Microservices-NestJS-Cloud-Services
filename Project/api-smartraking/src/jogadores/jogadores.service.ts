@@ -9,7 +9,24 @@ export class JogadoresService {
     constructor(@InjectModel("Jogador") private readonly jogadorModel:Model<JogadorInterface>) {}
 
    async createJogador(jogador: CreateJogadorDto): Promise<string> {
-    
+
+       const { email, phone } = jogador;
+
+       const jogadorEncontrado = await this.jogadorModel.findOne({email}) 
+
+       const phoneAlreadyRegistered = jogadorEncontrado?.phone === phone;
+       const emailAlreadyRegistered = jogadorEncontrado?.email === email;
+
+       if(phoneAlreadyRegistered){
+        this.throwNewError("Telefone ja cadastrado.");
+        return;
+       };
+
+       if(emailAlreadyRegistered) {
+        this.throwNewError("Email ja cadastrado.");
+        return;
+       }
+
        this.create(jogador);
 
        return 'Jogador criado com sucesso!'
