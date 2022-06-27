@@ -10,7 +10,7 @@ export interface CategoriaInterface extends Document {
 }
 
 export interface Evento {
-    name: string;
-    operation: string;
-    value: number;
+    nome: string;
+    operacao: string;
+    valor: number;
 }
