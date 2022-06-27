@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateJogadorDto } from './dtos/createJogador.dto';
+import { JogadorDto } from './dtos/createJogador.dto';
 import { JogadorInterface } from './interfaces/jogador.interface';
 @Injectable()
 export class JogadoresService {
 
     constructor(@InjectModel("Jogador") private readonly jogadorModel:Model<JogadorInterface>) {}
 
-   async createJogador(jogador: CreateJogadorDto): Promise<JogadorInterface> {
+   async createJogador(jogador: JogadorDto): Promise<JogadorInterface> {
 
        const { email, phone } = jogador;
 
@@ -23,14 +23,12 @@ export class JogadoresService {
 
     }
 
-    async updatingJogador(jogador: CreateJogadorDto): Promise<JogadorInterface>{
+    async updatingJogador(id: string, jogador: JogadorDto): Promise<JogadorInterface>{
 
-        const { email } = jogador;
-
-        const jogadorEncontrado = await this.jogadorModel.findOne({email}).exec();
+        const jogadorEncontrado = await this.jogadorModel.findById(id).exec();
 
         if(jogadorEncontrado){
-          return this.atualizar(jogador)
+          return this.atualizar(id, jogador)
         }else{
             this.throwNewError("Jogador não encontrado.")
         }
@@ -41,8 +39,8 @@ export class JogadoresService {
         return await this.jogadorModel.find().exec();
     }
 
-   async listJogadorByEmail(email:string):Promise<JogadorInterface>{
-    const jogadorEncontrado = await this.jogadorModel.findOne({email}).exec();
+   async listJogadorById(id:string):Promise<JogadorInterface>{
+    const jogadorEncontrado = await this.jogadorModel.findById(id).exec();
 
     if(!jogadorEncontrado){
         this.throwNewError("Jogador não encontrado.")
@@ -50,19 +48,19 @@ export class JogadoresService {
     return jogadorEncontrado;
    } 
 
-   async deleteJogador(email:string): Promise<string>{
+   async deleteJogador(id:string): Promise<string>{
 
-    const jogadorEncontrado = await this.jogadorModel.findOne({email}).exec();
+    const jogadorEncontrado = await this.jogadorModel.findById(id).exec();
 
     if(jogadorEncontrado){
-        await this.jogadorModel.deleteOne({email}).exec();
+        await this.jogadorModel.findByIdAndDelete(id).exec();
         return `Jogador ${jogadorEncontrado.name} foi deletado.`
     }else{
         this.throwNewError("Jogador não encontrado.")
     }   
    }
 
-    private async create(createJogador: CreateJogadorDto): Promise<JogadorInterface> {
+    private async create(createJogador: JogadorDto): Promise<JogadorInterface> {
 
         const jogadorCriado = new this.jogadorModel(createJogador)
 
@@ -70,11 +68,9 @@ export class JogadoresService {
 
     }
 
-    private async atualizar(criarJogador:CreateJogadorDto):Promise<JogadorInterface>{
+    private async atualizar(id:string, jogador:JogadorDto):Promise<JogadorInterface>{
 
-        const { email } = criarJogador;
-
-        return await this.jogadorModel.findOneAndUpdate({email}, {set: criarJogador}).exec()
+        return await this.jogadorModel.findByIdAndUpdate(id, {set: jogador}).exec()
     }
 
     private throwNewError(message:string): void{
