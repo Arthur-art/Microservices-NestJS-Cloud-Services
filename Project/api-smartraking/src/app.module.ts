@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JogadoresModule } from './jogadores/jogadores.module';
 import { ConfigModule } from '@nestjs/config';
 import { config } from "dotenv"
+import { CategoriasModule } from './categorias/categorias.module';
 
 config();
 @Module({
@@ -11,7 +12,8 @@ config();
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    JogadoresModule],
+    JogadoresModule,
+    CategoriasModule],
   controllers: [],
   providers: [],
 })
