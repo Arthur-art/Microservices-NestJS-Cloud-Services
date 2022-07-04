@@ -70,7 +70,7 @@ export class JogadoresService {
 
     private async atualizar(id:string, jogador:JogadorDto):Promise<JogadorInterface>{
 
-        return await this.jogadorModel.findByIdAndUpdate(id, {set: jogador}).exec()
+        return await this.jogadorModel.findByIdAndUpdate(id, jogador).exec()
     }
 
     private throwNewError(message:string): void{
