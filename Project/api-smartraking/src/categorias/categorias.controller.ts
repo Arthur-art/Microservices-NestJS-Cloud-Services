@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto } from './dtos/create-categoria.dto';
@@ -25,6 +25,11 @@ export class CategoriasController {
     async listCategoriaById(@Param('id', IdValidationPipe) id:string): Promise<CategoriaInterface>{
 
         return await this.categoriaService.listCategoriaById(id);
+    }
+
+    @Patch('atualizar-categoria/:id')
+    async atualizarCategoriaById(@Param('id', IdValidationPipe) id:string, @Body() categoria: CreateCategoriaDto): Promise<CategoriaInterface>{
+        return await this.categoriaService.atualizarCategoriaById(id, categoria);
     }
 
 }

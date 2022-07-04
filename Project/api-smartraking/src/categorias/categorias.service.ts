@@ -35,4 +35,15 @@ export class CategoriasService {
 
         return categoriaById;
     }
+
+    async atualizarCategoriaById(id:string, categoria:CreateCategoriaDto): Promise<CategoriaInterface>{
+
+        const categoriaEncontrada = await this.categoriaModel.findById(id).exec();
+
+        if(categoriaEncontrada){
+            return this.categoriaModel.findByIdAndUpdate(id, categoria);
+        }else{
+            throw new BadRequestException(`Categoria não cadastrada.`)
+        }
+    }
 }
