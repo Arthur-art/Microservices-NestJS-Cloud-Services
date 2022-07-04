@@ -13,4 +13,8 @@ export class JogadorDto {
     @IsNotEmpty()
     @IsString()
     name: string;
+
+    @IsNotEmpty()
+    @IsString()
+    urlPhotoJogador: string;
 }

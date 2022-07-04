@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateCategoriaDto } from './dtos/create-categoria.dto';
+import { UpdatingCategoriaDto } from './dtos/updating-categoria.dto';
 import { CategoriaInterface } from './interfaces/categoria.interface';
 
 @Injectable()
@@ -26,7 +27,7 @@ export class CategoriasService {
 
     async listCategorias(): Promise<CategoriaInterface[]>{
 
-        return await this.categoriaModel.find().exec()
+        return await this.categoriaModel.find().populate('jogadores').exec()
     }
 
     async listCategoriaById(id:string): Promise<CategoriaInterface>{
@@ -36,7 +37,7 @@ export class CategoriasService {
         return categoriaById;
     }
 
-    async atualizarCategoriaById(id:string, categoria:CreateCategoriaDto): Promise<CategoriaInterface>{
+    async atualizarCategoriaById(id:string, categoria:UpdatingCategoriaDto): Promise<CategoriaInterface>{
 
         const categoriaEncontrada = await this.categoriaModel.findById(id).exec();
 
@@ -45,5 +46,22 @@ export class CategoriasService {
         }else{
             throw new BadRequestException(`Categoria não cadastrada.`)
         }
+    }
+
+    async atribuirCategoriaJogador(params: string[]):Promise<void>{
+
+        const idCategoria = params['idCategoria'];
+        const idJogador = params['idJogador'];
+
+        const categoriaEncontrada = await this.categoriaModel.findById(idCategoria).exec();
+      //const jogadorCadastrado
+        
+      if(!categoriaEncontrada){
+        throw new BadRequestException(`Categoria ${idCategoria} não cadastrada.`);
+      }
+
+      categoriaEncontrada.jogadores.push(idJogador);
+
+      await this.categoriaModel.findByIdAndUpdate(idCategoria, categoriaEncontrada).exec();
     }
 }
