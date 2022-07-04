@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
-import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
+import { IdValidationPipe } from 'src/common/pipes/id-validation.pipe';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto } from './dtos/create-categoria.dto';
 import { UpdatingCategoriaDto } from './dtos/updating-categoria.dto';

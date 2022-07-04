@@ -48,3 +48,6 @@ export class AppModule {}
 
 ### Trabalhando com ValidationPipe no nestjs
 - https://docs.nestjs.com/techniques/validation#using-the-built-in-validationpipe
+
+### Trabalhando com Exception filters
+- https://docs.nestjs.com/exception-filters#exception-filters

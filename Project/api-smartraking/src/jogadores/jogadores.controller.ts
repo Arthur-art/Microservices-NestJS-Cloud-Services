@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
+import { IdValidationPipe } from 'src/common/pipes/id-validation.pipe';
 import { JogadorDto } from './dtos/createJogador.dto';
 import { JogadorInterface } from './interfaces/jogador.interface';
 import { JogadoresService } from './jogadores.service';
