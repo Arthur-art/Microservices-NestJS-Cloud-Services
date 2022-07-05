@@ -22,4 +22,8 @@ export class CreateDesafioDto{
     @IsString()
     solicitante: string;
 
+    @IsNotEmpty()
+    @IsString()
+    categoria: string;
+
 }
