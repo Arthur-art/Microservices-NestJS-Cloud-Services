@@ -4,6 +4,7 @@ import { JogadoresModule } from './jogadores/jogadores.module';
 import { ConfigModule } from '@nestjs/config';
 import { config } from "dotenv"
 import { CategoriasModule } from './categorias/categorias.module';
+import { DesafiosModule } from './desafios/desafios.module';
 
 config();
 @Module({
@@ -13,7 +14,8 @@ config();
       isGlobal: true
     }),
     JogadoresModule,
-    CategoriasModule],
+    CategoriasModule,
+    DesafiosModule],
   controllers: [],
   providers: [],
 })
