@@ -1,29 +1,18 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsDateString, IsNotEmpty } from "class-validator";
+import { JogadorInterface } from "src/jogadores/interfaces/jogador.interface";
 
 export class CreateDesafioDto{
 
     @IsNotEmpty()
-    @IsString()
-    dataHoraDesafio: string;
+    @IsDateString()
+    dataHoraDesafio: Date;
 
     @IsNotEmpty()
-    @IsString()
-    status: string;
+    solicitante: JogadorInterface;
 
-    @IsNotEmpty()
-    @IsString()
-    dataHoraSolicitacao: string;
-
-    @IsNotEmpty()
-    @IsString()
-    dataHoraResposta: string;
-
-    @IsNotEmpty()
-    @IsString()
-    solicitante: string;
-
-    @IsNotEmpty()
-    @IsString()
-    categoria: string;
+    @IsArray()
+    @ArrayMinSize(2)
+    @ArrayMaxSize(2)
+    jogadores: JogadorInterface[];
 
 }

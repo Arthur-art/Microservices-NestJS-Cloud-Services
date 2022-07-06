@@ -1,12 +1,15 @@
 import * as mongoose from 'mongoose'
 
 export const DesafiosSchema = new mongoose.Schema({
-    dataHoraDesafio: {type: String},
+    dataHoraDesafio: {type: Date},
     status: {type: String},
-    dataHoraSolicitacao: {type: String},
-    dataHoraResposta: {type: String},
-    solicitante: {type: String},
-    categoria: {type: String, unique: true},
+    dataHoraSolicitacao: {type: Date},
+    dataHoraResposta: {type: Date},
+    solicitante: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Jogador"
+    },
+    categoria: {type: String},
     jogadores: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Jogador"
