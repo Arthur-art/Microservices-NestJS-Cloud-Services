@@ -1,5 +1,6 @@
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsDateString, IsNotEmpty } from "class-validator";
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsDateString, IsNotEmpty, IsString } from "class-validator";
 import { JogadorInterface } from "src/jogadores/interfaces/jogador.interface";
+import { DesafioStatus } from "../enums/desafio-status.enum";
 
 export class CreateDesafioDto{
 
@@ -8,7 +9,11 @@ export class CreateDesafioDto{
     dataHoraDesafio: Date;
 
     @IsNotEmpty()
-    solicitante: JogadorInterface;
+    @IsString()
+    status: DesafioStatus;
+
+    @IsNotEmpty()
+    solicitante: string;
 
     @IsArray()
     @ArrayMinSize(2)
