@@ -10,7 +10,7 @@ export class DesafiosController {
     constructor(private readonly desafioService: DesafiosService){}
 
     @Post('create-desafio')
-    async createDesafio(@Body() createDesafio: CreateDesafioDto): Promise<void>{
+    async createDesafio(@Body() createDesafio: CreateDesafioDto): Promise<DesafiosInterface>{
 
         return await this.desafioService.createDesafio(createDesafio);
     }

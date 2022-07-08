@@ -1,34 +1,47 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CategoriasService } from 'src/categorias/categorias.service';
 import { JogadoresService } from 'src/jogadores/jogadores.service';
 import { CreateDesafioDto } from './dtos/create-desafio.dto';
 import { UpdateDesafioDto } from './dtos/update-desafio.dto';
+import { DesafioStatus } from './enums/desafio-status.enum';
 import { DesafiosInterface } from './interfaces/desafio.interface';
 
 @Injectable()
 export class DesafiosService {
 
     constructor(@InjectModel("Desafios") private readonly desafiosModel: Model<DesafiosInterface>, 
-    private readonly jogadoresService: JogadoresService){}
-    
+    private readonly jogadoresService: JogadoresService, private readonly categoriasService: CategoriasService){}
+    private readonly logger = new Logger(DesafiosService.name)
 
-    async createDesafio(createDesafio:CreateDesafioDto): Promise<void>{
+    async createDesafio(createDesafio:CreateDesafioDto): Promise<DesafiosInterface>{
 
-        const { jogadores, solicitante } = createDesafio;
-        const [playerOne, playerTwo] = jogadores;
-        
-        const solicitanteIsValid = await this.jogadoresService.listJogadorById(solicitante)
-        const jogadorOne = await this.jogadoresService.listJogadorById(playerOne._id)
-        const jogadorTwo = await this.jogadoresService.listJogadorById(playerTwo._id)
+        const jogadores = await this.jogadoresService.listJogadores()
 
-        if(solicitanteIsValid && jogadorOne && jogadorTwo){
-            const createNewDesafio = new this.desafiosModel(createDesafio);
-            createNewDesafio.save();
-        }else{
-            throw new BadRequestException(`Jogadores informados não estão cadastrados na base.`)
+        createDesafio.jogadores.map((jogadorDto)=>{
+            const jogadorFilter = jogadores.filter((jogador)=>{
+                return jogadorDto._id === jogador.id;
+            })
+            if(jogadorFilter.length == 0){
+                throw new BadRequestException(`O id ${jogadorDto.id} não é um jogador.`)
+            }
+        });
+
+        const categoriaDoJogador = await this.categoriasService.consultarCategoriaDoJogador(createDesafio.solicitante)
+
+        if (!categoriaDoJogador) {
+            throw new BadRequestException(`O solicitante precisa estar registrado em uma categoria!`)
         }
-        
+
+        const desafioCriado = new this.desafiosModel(createDesafio)
+        desafioCriado.categoria = categoriaDoJogador.categoria
+        desafioCriado.dataHoraSolicitacao = new Date()
+
+        desafioCriado.status = DesafioStatus.PENDENTE
+        this.logger.log(`desafioCriado: ${JSON.stringify(desafioCriado)}`)
+        return await desafioCriado.save()
+
     }
 
     async listDesafios():Promise<DesafiosInterface[]>{

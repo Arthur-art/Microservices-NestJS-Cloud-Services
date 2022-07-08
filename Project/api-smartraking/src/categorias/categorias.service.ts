@@ -73,4 +73,20 @@ export class CategoriasService {
 
       await this.categoriaModel.findByIdAndUpdate(idCategoria, categoriaEncontrada).exec();
     }
+
+
+    async consultarCategoriaDoJogador(idJogador: any): Promise<CategoriaInterface> {                                 
+
+       const jogadores = await this.jogadoresService.listJogadores()
+
+       const jogadorFilter = jogadores.filter( jogador => jogador._id == idJogador )
+
+       if (jogadorFilter.length == 0) {
+           throw new BadRequestException(`O id ${idJogador} não é um jogador!`)
+       }
+
+        return await this.categoriaModel.findOne().where('jogadores').in(idJogador).exec() 
+
+    }
+
 }

@@ -9,10 +9,6 @@ export class CreateDesafioDto{
     dataHoraDesafio: Date;
 
     @IsNotEmpty()
-    @IsString()
-    status: DesafioStatus;
-
-    @IsNotEmpty()
     solicitante: string;
 
     @IsArray()
